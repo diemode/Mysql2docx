@@ -28,7 +28,7 @@ class Mysql2docx(object):
 
     def getTables(self,db):
         sql = "select table_name, TABLE_COMMENT from information_schema.tables " \
-              "where table_schema = '%s' and table_type = 'base table'"%self.dbName
+              "where table_schema = '%s'"%self.dbName
         cursor=db.cursor()
         cursor.execute(sql)
         data = cursor.fetchall()
@@ -60,10 +60,10 @@ class Mysql2docx(object):
 
     @staticmethod
     def do(dbHost, dbUser, dbPassword, dbName, dbPort,doc='数据库设计文档.docx'):
-        print("dbHost:%s,dbUser:%s,dbPassword:%s,dbName:%s,dbPort:%d" % (dbHost, dbUser, dbPassword, dbName, dbPort))
+        print("dbHost:%s,dbUser:%s,dbPassword:%s,dbName:%s,dbPort:%s" % (dbHost, dbUser, dbPassword, dbName, dbPort))
         instance=Mysql2docx()
         instance.dbName=dbName
-        db = pymysql.connect(dbHost, dbUser, dbPassword, dbName, dbPort, charset="utf8")
+        db = pymysql.connect(host=dbHost, user=dbUser, password=dbPassword, database=dbName, port=int(dbPort), charset="utf8")
         tables = instance.getTables(db);
         for table in tables:
             tableName = table.name
